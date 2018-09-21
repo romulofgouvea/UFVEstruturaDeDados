@@ -126,11 +126,11 @@ int pesquisarElemento( Lista* lista, Aluno novo ){
 
 //IMPRIMIR
 void imprimirLista(Lista* lista){
+	printf("Imprimir Lista\n");
 	if( ListaVazia(lista) ){
 		printf("\n A sua lista esta vazia!\n\n");
 		return;
 	}
-	printf("\n\n");
 	int i;
 	for (i = 0; i <= lista->ultimo; i++ ){
 		printf("%d - %s\n", i+1,lista->info[i].nome);

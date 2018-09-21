@@ -10,6 +10,7 @@ typedef struct sAluno{
 typedef struct sCelula{
     Aluno info;
     struct sCelula *next;
+    int cont;
 }Lista;
 
 void inicializar( Lista** lista ){
@@ -32,6 +33,7 @@ int inserirNoInicio( Lista** lista, Aluno novo ){
 	Lista* nova = criarCelula();
 	nova->info = novo;
 	nova->next = NULL;
+	nova->cont = 0;
 	if ( listaVazia( (*lista) )){
 		(*lista) = nova;
 		return 1;
@@ -45,6 +47,7 @@ int inserirNoFim( Lista** lista, Aluno novo ){
 	Lista* nova = criarCelula();
 	nova->info = novo;
 	nova->next = NULL;
+	nova->cont = 0;
 	if ( listaVazia( (*lista ) )){
 		(*lista) = nova;
 		return 1;
@@ -54,6 +57,28 @@ int inserirNoFim( Lista** lista, Aluno novo ){
 		aux = aux->next;
 	}
 	aux->next = nova;
+	return 1;
+}
+
+int inserirOrdenado(Lista **lista, Lista* inserir){
+	Lista* nova = inserir;
+	if ( listaVazia( (*lista ) )){
+		(*lista) = nova;
+		return 1;
+	}
+	Lista* ant;
+	Lista* aux = (*lista);
+	while (aux != NULL && aux->cont >= nova->cont){
+		ant = aux;
+		aux = aux->next;
+	}
+	if (aux == (*lista)){
+		nova->next = (*lista);
+		(*lista) = nova;
+		return 1;
+	}
+	nova->next = aux;
+	ant->next = nova;
 	return 1;
 }
 
@@ -87,7 +112,44 @@ Aluno removerNoFim( Lista** lista ){
 	return removido;
 }
 
-//EXTRA
+int removerNaPosicao( Lista** lista, Lista* aluno_pesquisado ){
+	if ( listaVazia( (*lista ) )){
+		return;
+	}
+	Lista* ant = NULL;
+	Lista* aux = (*lista);
+	while( aux != aluno_pesquisado ){
+		ant = aux;
+		aux = aux->next;
+	}
+	if((*lista)->next == NULL){
+		(*lista) = NULL;
+		return 1;
+	}
+	ant->next = aux->next;
+	return 1;
+}
+
+//EXTRAS
+Lista* pesquisarElemento(Lista** lista, Aluno pesquisado){
+	if ( listaVazia( (*lista ) )){
+		return NULL;
+	}
+	Lista* aux= (*lista);
+	while( aux != NULL ){
+		if (strcmp(aux->info.nome, pesquisado.nome) == 0){
+			aux->cont++;
+			
+			removerNaPosicao(lista, aux);
+			inserirOrdenado(lista, aux);
+			
+			return aux;
+		}
+		aux = aux->next;
+	}
+	return NULL;
+}
+
 void liberarLista( Lista** lista ){
 	if ( listaVazia(*lista) ){
 		printf("Lista Vazia!\n");
@@ -104,14 +166,10 @@ void liberarLista( Lista** lista ){
 //IMPRIMIR
 void imprimirLista(Lista** lista){
 	printf("Imprimir Lista\n");
-	if ( listaVazia(*lista) ){
-		printf("Lista Vazia!\n");
-		return;
-	}
 	Lista *aux = (*lista);
 	int i = 1;
 	while (aux != NULL){
-		printf("%d - %s\n",i,aux->info.nome);
+		printf("%d - %s - %d\n",i,aux->info.nome, aux->cont);
 		i++;
 		aux = aux->next;
 	}
@@ -123,14 +181,17 @@ void Menu (){
     printf("::INSERIR\n");
     printf("  [1] - Inserir no Inicio\n");
     printf("  [2] - Inserir no Final\n");
+    printf("  [3] - Inserir no Ordenado\n\n");
     
     printf("::REMOVER\n");
-    printf("  [3] - Remover no Inicio\n");
-    printf("  [4] - Remover no Final\n");
+    printf("  [4] - Remover no Inicio\n");
+    printf("  [5] - Remover no Final\n");
+    printf("  [6] - Remover no na Posicao k\n");
     
     printf("::MOSTRAR\n");
-    printf("  [5] - Liberar Lista\n");
-    printf("  [6] - Mostrar Lista\n\n");
+    printf("  [7] - Pesquisar na Lista\n");
+    printf("  [8] - Liberar Lista\n\n");
+    printf("  [9] - Mostrar Lista\n\n");
     
     printf("::SAIR\n");
     printf("  [0] - Sair\n");
@@ -151,7 +212,6 @@ int main (){
 		system("cls");
 		switch(option){
 			case 0:
-				liberarLista(&lista);
 				return 0;
 			case 1:// Inserir no Inicio
 				printf("Digite o nome do aluno: ");
@@ -177,7 +237,25 @@ int main (){
 					printf("\n Ocorreu um erro :(\n");
 				}
 			    break;
-			case 3:// Remover no inicio
+			case 3:// Inerir ordenado
+				printf("Digite o nome do aluno: ");
+		   		fflush(stdin);
+		   		gets(a.nome);
+		   		printf("Digite a idade do aluno: ");
+		   		scanf("%d", &a.idade);
+		   		
+		   		Lista* nova = criarCelula();
+				nova->info = a;
+				nova->next = NULL;
+				nova->cont = 0;
+		   		
+				if(inserirOrdenado(&lista, nova)){
+					printf("Tudo certo :)");
+				}else{
+					printf("\n Ocorreu um erro :(\n");
+				}
+				break;
+			case 4:// Remover no inicio
 				a = removerNoInicio(&lista);
 				if(a.nome){
 					printf("ELEMENTO REMOVIDO: %s\n", a.nome);
@@ -186,7 +264,7 @@ int main (){
 					printf("\n Lista Vazia :(\n");
 				}
 				break;
-			case 4:// Remover no final
+			case 5:// Remover no final
 				a = removerNoFim(&lista);
 				if(a.nome){
 					printf("ELEMENTO REMOVIDO: %s\n", a.nome);
@@ -194,16 +272,43 @@ int main (){
 				}else{
 					printf("\n Lista Vazia :(\n");
 				}
-				
 				break;
-
-			case 5:
+			case 6:// Remover na posicao K
+		   		imprimirLista(&lista);
+				printf("Digite o nome do aluno para remover: ");
+		   		fflush(stdin);
+		   		gets(a.nome);
+		   		Lista* l = pesquisarElemento(&lista, a);
+				if(l != NULL){
+					if(removerNaPosicao(&lista,l)){
+						printf("Tudo certo :)");
+					}else{
+						printf("\n Ocorreu um erro :(\n");
+					}
+				}else{
+					printf("\n Ocorreu um erro :(\n");
+				}
+				break;
+			case 7:
+				imprimirLista(&lista);
+				printf("Digite o nome do aluno para pesquisar: ");
+		   		fflush(stdin);
+		   		gets(a.nome);
+		   		Lista* l = pesquisarElemento(&lista, a);
+				if(l != NULL){
+					printf("ELEMENTO ENCONTRADO: %s - %d\n", l->info.nome,l->cont);
+					printf("Tudo certo :)\n");
+				}else{
+					printf("\n Ocorreu um erro :(\n");
+				}
+				break;
+			case 8:
 				liberarLista(&lista);
 				break;
-			case 6:// Mostrar Lista
+			case 9:// Mostrar Lista
 				imprimirLista(&lista);
 				break;
-					
+			
 			default:
 				printf("Opcao invalida\n");
 				break;
