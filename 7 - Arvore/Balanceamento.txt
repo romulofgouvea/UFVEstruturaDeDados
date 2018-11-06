@@ -1,0 +1,69 @@
+
+FATOR DE BALANCEAMENTO:
+Para se balancear uma arvore binaria de pesquisa, calcula-se o seu fator de balanceamento:
+
+  5
+ 2 
+  3
+  
+o fator de balanceamento do 5 é de: 2 a esquerda, menos, 0 a direita, logo: 2-0=2
+
+ 5
+  7
+ 6 9
+
+O fator de balancemanto do 5 é de: 0 a esquerda, menos, 2 a direita, logo: 0-2=-2
+
+
+2 - ROTAÇÕES
+ROTAÇÂO SIMPLES PARA ESQUERDA
+Ocorre quando têm-se muitos nós a direita, isto é, um fator de balanceamento menor que -1. Ex: -2, -3...
+E ao mesmo tempo, têm-se logo abaixo, um valor negativo ou zerado. EX:
+
+   A
+    D
+     F
+
+O fator de balanceamento do nó A, é -2, logo deve-se fazer uma rotação simples para a direita.
+1 - A rotação, começa colocando o item do centro (D) como o pai dos três nós:
+2 - Os dois nós restantes, serão os novos filhos do nó pai (D):
+    D
+   A F
+* - Para verificar se deu corretamente, basta re-calcular os fatores de balanceamento de todos os nós. 
+* -  Se existirem fatores maiores que 1 ou menores que -1 , você fez errado :/
+
+
+******** Rotação simples para esquerda em árvores grandes**************************
+Exite uma preocupação quanto a onde ficaráo os novos nós que tocam a árvore de saída.
+O ÚNICO NÓ QUE MUDA, SERÁ A RAMIFICAÇÃO QUE TOCA O NÓ CENTRAL ANTES DA ROTAÇÃO!!!!!!
+EX:
+...
+    A
+  X   D
+     Y  F
+	   X X
+...
+Após a rotação, as variáveis "X" ficarão onde já se encontram. O que mudará é apenas o 
+ramo que está ligado ao NÓ CENTRAL, nesse caso (D). Esse ramo abaixo do nó D, mudará de lado
+da esquerda para a direita, ou da direita para a esquerda, do NÓ que estava mais acima antes
+da rotação, que nesse cao é o (A):
+
+...
+     D
+  A     F
+ X Y   X X
+...
+
+
+ROTAÇÃO DUPLA:
+Rotação simples para' a esquerda, seguida de rotação simples para a direita:
+
+
+
+
+
+
+
+
+     
+

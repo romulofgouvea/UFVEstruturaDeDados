@@ -1,0 +1,24 @@
+          [2]
+   [1]    [3]    [4]
+ [0] [6]    [5]
+ 
+ 
+ A raiz é a mesma raiz
+ só que essa raiz, tem apena um filho. é o primeiro a esquerda, esse, fica a esquerda da raiz:
+    [2]
+   [1]
+   
+os nós no mesmo nível, vão sendo filhos de filhos a direita do [1]
+
+        [2]
+	  [1]
+	    [3]
+		  [4]
+
+Continuo fazendo isso a cada nó: se ele tiver filhos, o mais a esquerda que é o único filho
+
+            [2]
+	      [1]
+	  [0]     [3]
+	 	[6] [5] [4]
+		  

@@ -1,0 +1,38 @@
+Grau de um nó: número de filhos do nó
+Grau da árvore: maior grau de seus nós. Isto é, vejo todos os nós e conto qual tem mais filhos. 
+ Esse numero é o grau da árvore.
+
+Nível de um nó: Número de nós entre ele e a raiz
+9----------nivel 0
+ \---------
+  10-------nivel 1
+  / \------
+ 8---11----nivel 2
+
+
+Altura - Maior nível da árvore, logo, basta contar os niveis da arvore (começando em 0). o maior é a altura.
+Altura de uma arvore com apenas a raiz: 0
+Altura de uma arvore sem raiz: -1
+  if ((*raiz)==NULL){return -1;}
+  int esq = 1+altura(&(*raiz)->esq);
+  int dir = 1+altura(&(*raiz)->dir);
+  if (esq > dir){return esq;}else{return dir;}
+
+
+Arvore estritamente binária: cada nó tem exatamente 0 ou 2 filhos.
+nós: (2^n)-1, onde N é a altura da arvore.
+
+
+Transformação de vetor em árvore:
+filho a esquerda: 2x+1
+Filho a direita:  2x+2
+v = [A, B, C, D]
+Raiz: V[0]
+              A
+			/  \
+		   B    C
+		  / \  /  \
+		 D
+
+árvore binária completa: as folhas só existem no ultimo e penultimo nivel.
+árvore binária cheia: quando o numero de nós é o máximo
